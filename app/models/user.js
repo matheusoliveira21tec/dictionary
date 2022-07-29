@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const bCrypt = require("bcrypt");
 
-const noteSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
     name:String,
-    body:String,
+    email:{type: String, required: true, unique: true},
+    password:{type: String, required: true},
     create_at:{type: Date, default: Date.now},
     update_at:{type: Date, default: Date.now},
     author: [{
@@ -12,4 +14,19 @@ const noteSchema = mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.model("Note", noteSchema);
+userSchema.pre('save', function(next){
+    if(this.isNew || this.isModifiel('password')){
+        bCrypt.hash(this.password, 10,
+            (err, hashedPassword)=>{
+                if(err){
+                    next(err);
+                }
+                else{
+                    this.password = hashedPassword;
+                    next();
+                }
+            })
+    }
+});
+
+module.exports = mongoose.model("User", userSchema);
