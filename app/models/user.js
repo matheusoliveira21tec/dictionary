@@ -7,11 +7,6 @@ const userSchema = mongoose.Schema({
     password:{type: String, required: true},
     create_at:{type: Date, default: Date.now},
     update_at:{type: Date, default: Date.now},
-    author: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    }]
 });
 
 userSchema.pre('save', function(next){
@@ -28,5 +23,14 @@ userSchema.pre('save', function(next){
             })
     }
 });
+
+userSchema.methods.isCorrectPassword = function(password, callback){
+    bCrypt.compare(password, this.password, function(err,same){
+        if(err)
+        callback(err);
+        else
+        callback(err,same);
+    })
+}
 
 module.exports = mongoose.model("User", userSchema);
