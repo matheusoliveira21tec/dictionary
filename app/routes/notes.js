@@ -17,11 +17,11 @@ router.get('/search', withAuth, async (req, res) => {
     try {
         const { query } = req.query;
         let note = await Note
-        .find({author: req.user._id})
-        .find({$text:{$search: query}});
+            .find({ author: req.user._id })
+            .find({ $text: { $search: query } });
         res.json(note);
     } catch (error) {
-        res.status(500).json({ error: error});
+        res.status(500).json({ error: error });
     }
 })
 router.get('/:id', withAuth, async (req, res) => {
@@ -40,13 +40,17 @@ router.get('/:id', withAuth, async (req, res) => {
 router.put('/:id', withAuth, async (req, res) => {
     const { title, body } = req.body;
     const { id } = req.params;
+    
     try {
+        let note = await Note.findById(id);
         if (isOwner(req.user, note)) {
-            let note = await Note.findByIdAndUpdate(id,
+            note = await Note.findOneAndUpdate(
+                { _id: id },
                 { $set: { title: title, body: body } },
                 { upsert: true, 'new': true }
-            );
-            res.status(200).json(note);
+            )
+
+            res.json(note);
         }
         else
             res.status(403).json({ error: 'Permission denied.' });
@@ -61,7 +65,7 @@ router.delete('/:id', withAuth, async (req, res) => {
         let note = await Note.findById(id);
         if (isOwner(req.user, note)) {
             note.delete();
-            res.status(204).json({ message: 'Ok'});
+            res.status(204).json({ message: 'Ok' });
         }
         else
             res.status(403).json({ error: 'Permission denied.' });
