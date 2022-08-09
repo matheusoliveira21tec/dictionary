@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.pre('save', function(next){
-    if(this.isNew || this.isModifiel('password')){
+    if(this.isNew || this.isModifield('password')){
         bCrypt.hash(this.password, 10,
             (err, hashedPassword)=>{
                 if(err){
