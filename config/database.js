@@ -5,6 +5,5 @@ main().then(() => console.log("Conection Sucessful."));
 require('dotenv').config();
 const MONGO_URL = process.env.MONGO_URL;
 async function main() {
-    await mongoose.connect(MONGO_URL,
-    );
+    await mongoose.connect(MONGO_URL);
 }
