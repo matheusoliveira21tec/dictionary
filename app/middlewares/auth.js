@@ -5,13 +5,13 @@ const User = require('../models/user');
 const jwt = require("jsonwebtoken");
 
 const withAuth = (req, res, next) => {
-    const token = req.headers['x-acess-token'];
+    const token = req.headers['x-access-token'];
     if (!token)
-        res.status(401).json({ error: 'Unauthorized: no token provided.' });
+        res.status(400).json({ error: 'Unauthorized: no token provided.' });
     else {
         jwt.verify(token, secret, (err, decode) => {
             if (err)
-                res.status(401).json({ error: 'Unauthorized: token invalided.' });
+                res.status(400).json({ error: 'Unauthorized: token invalided.' });
             else {
                 req.email = decode.email;
                 User.findOne({ email: decode.email })
@@ -20,7 +20,7 @@ const withAuth = (req, res, next) => {
                         next();
                     })
                     .catch(err => {
-                        res.status(401).json({ error: err });
+                        res.status(400).json({ error: err });
                     })
             }
         })
