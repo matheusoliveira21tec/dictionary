@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const favoritesSchema = mongoose.Schema({
-    words: [{name:{type: String, unique: true}, add_at:{type: Date}}],
+    words: [{name:{type: String}, add_at:{type: Date}}],
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

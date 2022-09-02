@@ -64,7 +64,7 @@ router.get('/', withAuth, async (req, res) => {
             else {
                 cache = 'HIT';
             }
-            History.updateOne({ user: req.user._id }, { $push: { words: { name: word, add_at: Date.now() } } });
+            await History.updateOne({ user: req.user._id }, { $push: { words: { name: word, add_at: Date.now() } } });
             if (response.request.fromCache !== true) {
             }
             res.set('x-cache', cache);

@@ -13,9 +13,9 @@ router.post('/signup', async (req, res) => {
   try {
     await user.save();
     const history = new History({user : user._id});
-    await history.save({user:user._id});
+    await history.save();
     const favorites = new Favorites({user : user._id});
-    await favorites.save({user:user._id});
+    await favorites.save();
     const token = jwt.sign({ email }, secret, { expiresIn: '10d' });
     res.status(200).json({ id: user._id, name: user.name, token: token });
   } catch (error) {
