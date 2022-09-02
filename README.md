@@ -17,6 +17,7 @@
 - node script.js (popular o banco de dados com os dados pegos na Free Dictionary Api)
 - node run dev (dar inicio a api)
 
-
+## Link da apresentação
+- [Apresentação](https://www.loom.com/share/9e3e5ac3cad74804af627d07e0d6b334)
 
 >  This is a challenge by [Coodesh](https://coodesh.com/)
